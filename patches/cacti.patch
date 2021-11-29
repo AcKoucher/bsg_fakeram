@@ -1,16 +1,37 @@
-From 86fbd144d68b6874baff1572c3d0b2817d4461d3 Mon Sep 17 00:00:00 2001
-From: Scott Davidson <scottdavidson1992@gmail.com>
-Date: Tue, 7 Apr 2020 17:05:21 -0700
-Subject: [PATCH] Cacti patch
-
----
- io.cc | 94 +++++++++++++++++++++++++++++++++++--------------------------------
- 1 file changed, 49 insertions(+), 45 deletions(-)
-
+diff --git a/cacti.mk b/cacti.mk
+index b675d75..4e4817a 100644
+--- a/cacti.mk
++++ b/cacti.mk
+@@ -13,7 +13,7 @@ INCS = -lm
+ 
+ ifeq ($(TAG),dbg)
+   DBG = -Wall 
+-  OPT = -ggdb -g -O0 -DNTHREADS=1  -gstabs+
++  OPT = -ggdb -g -O0 -DNTHREADS=1
+ else
+   DBG = 
+   OPT = -g  -msse2 -mfpmath=sse -DNTHREADS=$(NTHREADS)
 diff --git a/io.cc b/io.cc
-index 3a798aa..e6037da 100644
+index 3a798aa..7ee34aa 100644
 --- a/io.cc
 +++ b/io.cc
+@@ -1993,11 +1993,11 @@ bool InputParameter::error_checking()
+     cerr << "Feature size must be > 0" << endl;
+     return false;
+   }
+-  else if (F_sz_um > 0.091)
+-  {
+-    cerr << "Feature size must be <= 90 nm" << endl;
+-    return false;
+-  }
++//  else if (F_sz_um > 0.091)
++//  {
++//    cerr << "Feature size must be <= 90 nm" << endl;
++//    return false;
++//  }
+ 
+ 
+   uint32_t RWP  = num_rw_ports;
 @@ -2547,7 +2547,7 @@ void output_data_csv(const uca_org_t & fin_res, string fn)
      {
        file << "Tech node (nm), ";
@@ -152,6 +173,21 @@ index 3a798aa..e6037da 100644
      file<<endl;
    }
    file.close();
--- 
-2.16.6
-
+diff --git a/nuca.cc b/nuca.cc
+index 02e44a1..05f4e3b 100644
+--- a/nuca.cc
++++ b/nuca.cc
+@@ -40,11 +40,9 @@ unsigned int MIN_BANKSIZE=65536;
+ #define LATCH_DELAY 28e-12 /* latch delay in s (later should use FO4 TODO) */
+ #define CONTR_2_BANK_LAT 0
+ 
+-int cont_stats[2 /*l2 or l3*/][5/* cores */][ROUTER_TYPES][7 /*banks*/][8 /* cycle time */];
++int cont_stats[2 /*l2 or l3*/][5/* cores */][ROUTER_TYPES][8 /*banks*/][8 /* cycle time */];
+ 
+-  Nuca::Nuca(
+-      /*TechnologyParameter::*/DeviceType *dt = &(g_tp.peri_global)
+-      ):deviceType(dt)
++Nuca::Nuca(DeviceType *dt) : deviceType(dt)
+ {
+   init_cont();
+ }
