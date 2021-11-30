@@ -23,6 +23,10 @@ class Process:
     self.snapHeight_nm  = int(json_data['snapHeight_nm']) if 'snapHeight_nm' in json_data else 1
     self.flipPins       = str(json_data['flipPins']) if 'flipPins' in json_data else 'false'
 
+    self.liberty_time_unit = str(json_data['libertyTimeUnit']) if 'libertyTimeUnit' in json_data else 'ns'
+    self.liberty_cap_unit = str(json_data['libertyCapUnit']) if 'libertyCapUnit' in json_data else 'pf'
+    self.liberty_power_unit = str(json_data['libertyPowerUnit']) if 'libertyPowerUnit' in json_data else 'uw'
+
     # Converted values
     self.tech_um     = self.tech_nm / 1000.0
     self.pinWidth_um = self.pinWidth_nm / 1000.0

@@ -2,6 +2,7 @@ import os
 import math
 import time
 import datetime
+import sys
 
 ################################################################################
 # GENERATE LIBERTY VIEW
@@ -18,16 +19,56 @@ def generate_lib( mem ):
     area              = float(mem.area_um2)
     x                 = float(mem.width_um)
     y                 = float(mem.height_um)
-    leakage           = float(mem.standby_leakage_per_bank_mW)*1e3
-    tsetup            = float(mem.t_setup_ns)
-    thold             = float(mem.t_hold_ns)
-    tcq               = float(mem.access_time_ns)
-    clkpindynamic     = float(mem.pin_dynamic_power_mW)*1e3
-    pindynamic        = float(mem.pin_dynamic_power_mW)*1e1
-    min_driver_in_cap = float(mem.cap_input_pf)
+    tsetup_ns         = float(mem.t_setup_ns)
+    thold_ns          = float(mem.t_hold_ns)
+    tcq_ns            = float(mem.access_time_ns)
     voltage           = float(mem.process.voltage)
-    min_period        = float(mem.cycle_time_ns)
-    fo4               = float(mem.fo4_ps)/1e3
+    min_period_ns     = float(mem.cycle_time_ns)
+    fo4_ns            = float(mem.fo4_ps)/1e3
+    min_driver_in_cap_pf = float(mem.cap_input_pf)
+    leakage_mw        = float(mem.standby_leakage_per_bank_mW)
+    clkpindynamic_mw  = float(mem.pin_dynamic_power_mW)
+    pindynamic_mw     = float(mem.pin_dynamic_power_mW)*1e-2
+
+    time_unit         = str(mem.process.liberty_time_unit)
+    cap_unit          = str(mem.process.liberty_cap_unit)
+    power_unit        = str(mem.process.liberty_power_unit)
+
+    if time_unit == "ns":
+        tsetup = tsetup_ns
+        thold = thold_ns
+        tcq = tcq_ns
+        min_period = min_period_ns
+        fo4 = fo4_ns
+    elif time_unit == "ps":
+        tsetup = tsetup_ns * 1e+3
+        thold = thold_ns * 1e+3
+        tcq = tcq_ns * 1e+3
+        min_period = min_period_ns * 1e+3
+        fo4 = fo4_ns * 1e+3
+    else:
+        print("unknown libertyTimeUnit")
+        sys.exit()
+
+    if cap_unit == "pf":
+        min_driver_in_cap = min_driver_in_cap_pf
+    elif cap_unit == "ff":
+        min_driver_in_cap = min_driver_in_cap_pf * 1e+3
+    else:
+        print("unknown libertyCapUnit")
+        sys.exit()
+
+    if power_unit == "uw":
+        clkpindynamic = clkpindynamic_mw * 1e+3
+        pindynamic = pindynamic_mw * 1e+3
+        leakage = leakage_mw * 1e+3
+    elif power_unit == "nw":
+        clkpindynamic = clkpindynamic_mw * 1e+6
+        pindynamic = pindynamic_mw * 1e+6
+        leakage = leakage_mw * 1e+6
+    else:
+        print("unknown libertyPowerUnit")
+        sys.exit()
 
     # Only support 1RW srams. At some point, expose these as well!
     num_rwport = mem.rw_ports
@@ -72,14 +113,14 @@ def generate_lib( mem ):
     LIB_file.write( '    revision : 1.0;\n')
     LIB_file.write( '    date : "%s %s";\n' % (date, current_time))
     LIB_file.write( '    comment : "SRAM";\n')
-    LIB_file.write( '    time_unit : "1ns";\n')
+    LIB_file.write( '    time_unit : "1%s";\n' % time_unit)
     LIB_file.write( '    voltage_unit : "1V";\n')
     LIB_file.write( '    current_unit : "1uA";\n')
-    LIB_file.write( '    leakage_power_unit : "1uW";\n')
+    LIB_file.write( '    leakage_power_unit : "1%s";\n' % power_unit)
     LIB_file.write( '    nom_process : 1;\n')
     LIB_file.write( '    nom_temperature : 25.000;\n')
     LIB_file.write( '    nom_voltage : %s;\n' % voltage)
-    LIB_file.write( '    capacitive_load_unit (1,pf);\n\n')
+    LIB_file.write( '    capacitive_load_unit (1,%s);\n\n' % cap_unit)
     LIB_file.write( '    pulling_resistance_unit : "1kohm";\n\n')
     LIB_file.write( '    operating_conditions(tt_1.0_25.0) {\n')
     LIB_file.write( '        process : 1;\n')
@@ -209,6 +250,8 @@ def generate_lib( mem ):
     #LIB_file.write('            when : "1";\n')
     #LIB_file.write('            sdf_cond : "1";\n')
     #LIB_file.write('        }\n')
+
+    # This is wrong. internal power is not the same as dynamuc power. -cherry
     LIB_file.write('        internal_power(){\n')
     LIB_file.write('            rise_power(scalar) {\n')
     LIB_file.write('                values ("%.3f")\n' % clkpindynamic)
