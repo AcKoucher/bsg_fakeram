@@ -67,9 +67,7 @@ class Memory:
     self.area_um2 = self.width_um * self.height_um
 
     #self.pin_dynamic_power_mW = (0.5 * self.cap_input_pf * (float(self.process.voltage)**2))*1e9 ;# P = 0.5*CV^2
-
-    # This is wrong. mW are mJ/sec, not nJ. -cherry
-    self.pin_dynamic_power_mW = self.dyn_write_energy_nj
+    self.pin_dynamic_power_nj = self.dyn_write_energy_nj
 
     self.t_setup_ns = 0.050  ;# arbitrary 50ps setup
     self.t_hold_ns  = 0.050  ;# arbitrary 50ps hold

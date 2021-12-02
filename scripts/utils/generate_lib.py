@@ -27,8 +27,8 @@ def generate_lib( mem ):
     fo4_ns            = float(mem.fo4_ps)/1e3
     min_driver_in_cap_pf = float(mem.cap_input_pf)
     leakage_mw        = float(mem.standby_leakage_per_bank_mW)
-    clkpindynamic_mw  = float(mem.pin_dynamic_power_mW)
-    pindynamic_mw     = float(mem.pin_dynamic_power_mW)*1e-2
+    clkpindynamic_nj  = float(mem.pin_dynamic_power_nj)
+    pindynamic_nj     = float(mem.pin_dynamic_power_nj)*1e-2
 
     time_unit         = str(mem.process.liberty_time_unit)
     cap_unit          = str(mem.process.liberty_cap_unit)
@@ -52,19 +52,31 @@ def generate_lib( mem ):
 
     if cap_unit == "pf":
         min_driver_in_cap = min_driver_in_cap_pf
+        energy_unit = "pj"
     elif cap_unit == "ff":
         min_driver_in_cap = min_driver_in_cap_pf * 1e+3
+        energy_unit = "fj"
     else:
         print("unknown libertyCapUnit")
         sys.exit()
 
+    # energy unit = volt_unit * volt_unit * cap_unit
+    if energy_unit == "nj":
+        pindynamic = pindynamic_nj
+        clkpindynamic = clkpindynamic_nj
+    elif energy_unit == "pj":
+        pindynamic = pindynamic_nj * 1e+3
+        clkpindynamic = clkpindynamic_nj * 1e+3
+    elif energy_unit == "fj":
+        pindynamic = pindynamic_nj * 1e+6
+        clkpindynamic = clkpindynamic_nj * 1e+6
+    else:
+        print("unknown energy unit")
+        sys.exit()
+
     if power_unit == "uw":
-        clkpindynamic = clkpindynamic_mw * 1e+3
-        pindynamic = pindynamic_mw * 1e+3
         leakage = leakage_mw * 1e+3
     elif power_unit == "nw":
-        clkpindynamic = clkpindynamic_mw * 1e+6
-        pindynamic = pindynamic_mw * 1e+6
         leakage = leakage_mw * 1e+6
     else:
         print("unknown libertyPowerUnit")
