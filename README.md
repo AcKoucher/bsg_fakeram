@@ -64,11 +64,11 @@ supply straps (also on metal 4) will be horizontal. If set to true then metal 1
 is assumed to be horizontal. This means that signal pins will be on metal 3 and
 the supply straps (on metal 4) will be vertical.
 
-`libertyTimeUnit` - (Optional : 1) Liberty time unit, `ns|ps`
+`libertyTimeUnit` - (Optional : ns) Liberty time unit, `ns|ps`
 
-`libertyCapUnit` - (Optional : 1) Liberty capacitance unit, `pf|ff`
+`libertyCapUnit` - (Optional : pf) Liberty capacitance unit, `pf|ff`
 
-`libertyPowerUnit` - (Optional : 1) Liberty leakage power unit, `uw|nw`
+`libertyPowerUnit` - (Optional : uw) Liberty leakage power unit, `uw|nw`
 
 `srams` - A list of SRAMs to generate. Each sram should have a `name`, `width`
 (or the number of bits per word), `depth` (or number of words), and `banks`.
