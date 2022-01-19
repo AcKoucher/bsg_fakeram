@@ -22,7 +22,7 @@ class Process:
     self.snapWidth_nm   = int(json_data['snapWidth_nm']) if 'snapWidth_nm' in json_data else 1
     self.snapHeight_nm  = int(json_data['snapHeight_nm']) if 'snapHeight_nm' in json_data else 1
     self.flipPins       = str(json_data['flipPins']) if 'flipPins' in json_data else 'false'
-
+    self.swap_width_height = str(json_data['swapWidthHeight']) if 'swapWidthHeight' in json_data else 'false'
     self.liberty_time_unit = str(json_data['libertyTimeUnit']) if 'libertyTimeUnit' in json_data else 'ns'
     self.liberty_cap_unit = str(json_data['libertyCapUnit']) if 'libertyCapUnit' in json_data else 'pf'
     self.liberty_power_unit = str(json_data['libertyPowerUnit']) if 'libertyPowerUnit' in json_data else 'uw'

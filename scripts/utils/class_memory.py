@@ -56,10 +56,12 @@ class Memory:
     self.fo4_ps                      = float(cacti_data[11])
     self.width_um                    = float(cacti_data[12])
     self.height_um                   = float(cacti_data[13])
-
     self.cap_input_pf = 0.005
 
     self.tech_node_um = self.tech_node_nm / 1000.0
+
+    if process.swap_width_height:
+      self.width_um, self.height_um = self.height_um, self.width_um
 
     # Adjust to snap
     self.width_um = (math.ceil((self.width_um*1000.0)/self.process.snapWidth_nm)*self.process.snapWidth_nm)/1000.0
