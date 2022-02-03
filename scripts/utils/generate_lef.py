@@ -51,7 +51,10 @@ def generate_lef( mem ):
     track_count -= 1
 
     pin_pitch = min_pin_pitch * track_count
-    group_pitch = math.floor((number_of_tracks_available - number_of_pins*track_count) / 4)*mem.process.pinPitch_um
+    extra = math.floor((number_of_tracks_available - number_of_pins*track_count) / 4)
+    if extra == 0:
+        extra = 1
+    group_pitch = extra*mem.process.pinPitch_um
 
     #########################################
     # LEF HEADER
