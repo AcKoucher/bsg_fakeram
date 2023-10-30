@@ -317,11 +317,12 @@ def generate_lef( mem ):
 #
 # Helper function that adds a signal pin
 #
+# Pins are placed based on their origin, not their center.
+#
 def lef_add_pin( fid, mem, pin_name, is_input, y, pitch ):
 
   layer = mem.process.metalPrefix + ('3' if mem.process.flipPins.lower() == 'true' else '4')
   pw  = mem.process.pinWidth_um
-  hpw = (mem.process.pinWidth_um/2.0) ;# half pin width
 
   fid.write('  PIN %s\n' % pin_name)
   fid.write('    DIRECTION %s ;\n' % ('INPUT' if is_input else 'OUTPUT'))
@@ -329,7 +330,7 @@ def lef_add_pin( fid, mem, pin_name, is_input, y, pitch ):
   fid.write('    SHAPE ABUTMENT ;\n')
   fid.write('    PORT\n')
   fid.write('      LAYER %s ;\n' % layer)
-  fid.write('      RECT %.3f %.3f %.3f %.3f ;\n' % (0, y-hpw, pw, y+hpw))
+  fid.write('      RECT %.3f %.3f %.3f %.3f ;\n' % (0, y, pw, y+pw))
   fid.write('    END\n')
   fid.write('  END %s\n' % pin_name)
   
