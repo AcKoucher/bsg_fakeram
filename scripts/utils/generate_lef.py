@@ -193,31 +193,31 @@ def generate_lef( mem ):
         prev_y = 0
         y_step = y_offset
         for i in range(int(bits)) :
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
         y_step += group_pitch-pin_pitch
         for i in range(int(bits)) :
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
         y_step += group_pitch-pin_pitch
         for i in range(int(bits)) :
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
         y_step += group_pitch-pin_pitch
         for i in range(int(addr_width)) :
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
         y_step += group_pitch-pin_pitch
         for i in range(3):
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
 
-        # Final shapre from top of last pin to top edge
+        # Final shape from top of last pin to top edge
         fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,h))
 
     # Not flipped therefore no pins on M3 (Full rect)
@@ -276,31 +276,31 @@ def generate_lef( mem ):
         prev_y = 0
         y_step = y_offset
         for i in range(int(bits)) :
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
         y_step += group_pitch-pin_pitch
         for i in range(int(bits)) :
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
         y_step += group_pitch-pin_pitch
         for i in range(int(bits)) :
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
         y_step += group_pitch-pin_pitch
         for i in range(int(addr_width)) :
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
         y_step += group_pitch-pin_pitch
         for i in range(3):
-            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step-min_pin_width/2))
-            prev_y = y_step+min_pin_width/2
+            fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,y_step))
+            prev_y = y_step+min_pin_width
             y_step += pin_pitch
 
-        # Final shapre from top of last pin to top edge
+        # Final shape from top of last pin to top edge
         fid.write('    RECT 0 %.3f %.3f %.3f ;\n' % (prev_y,min_pin_width,h))
 
     # Overlap layer (full rect)
